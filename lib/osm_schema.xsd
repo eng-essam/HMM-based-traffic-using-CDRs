@@ -1,0 +1,82 @@
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="osm">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="bounds">
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="xs:string">
+                <xs:attribute type="xs:float" name="minlat"/>
+                <xs:attribute type="xs:float" name="minlon"/>
+                <xs:attribute type="xs:float" name="maxlat"/>
+                <xs:attribute type="xs:float" name="maxlon"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="node" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType mixed="true">
+            <xs:sequence>
+              <xs:element name="tag" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="k" use="optional"/>
+                      <xs:attribute type="xs:string" name="v" use="optional"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute type="xs:long" name="id" use="optional"/>
+            <xs:attribute type="xs:string" name="visible" use="optional"/>
+            <xs:attribute type="xs:byte" name="version" use="optional"/>
+            <xs:attribute type="xs:int" name="changeset" use="optional"/>
+            <xs:attribute type="xs:dateTime" name="timestamp" use="optional"/>
+            <xs:attribute type="xs:string" name="user" use="optional"/>
+            <xs:attribute type="xs:int" name="uid" use="optional"/>
+            <xs:attribute type="xs:float" name="lat" use="optional"/>
+            <xs:attribute type="xs:float" name="lon" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="way" maxOccurs="unbounded" minOccurs="0">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="nd" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:long" name="ref" use="optional"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="tag" maxOccurs="unbounded" minOccurs="0">
+                <xs:complexType>
+                  <xs:simpleContent>
+                    <xs:extension base="xs:string">
+                      <xs:attribute type="xs:string" name="k" use="optional"/>
+                      <xs:attribute type="xs:string" name="v" use="optional"/>
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute type="xs:int" name="id" use="optional"/>
+            <xs:attribute type="xs:string" name="visible" use="optional"/>
+            <xs:attribute type="xs:byte" name="version" use="optional"/>
+            <xs:attribute type="xs:int" name="changeset" use="optional"/>
+            <xs:attribute type="xs:dateTime" name="timestamp" use="optional"/>
+            <xs:attribute type="xs:string" name="user" use="optional"/>
+            <xs:attribute type="xs:int" name="uid" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute type="xs:float" name="version"/>
+      <xs:attribute type="xs:string" name="generator"/>
+      <xs:attribute type="xs:string" name="copyright"/>
+      <xs:attribute type="xs:anyURI" name="attribution"/>
+      <xs:attribute type="xs:anyURI" name="license"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

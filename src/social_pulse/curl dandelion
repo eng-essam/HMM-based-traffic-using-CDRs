@@ -1,0 +1,76 @@
+#!/bin/bash
+
+for i in bari milano napoli palermo roma torino venezia;
+do 
+    curl -o $i.1 https://api.dandelion.eu/datagems/v2/SpazioDati/social-pulse-2015-$i/data?\$select=timestamp,user,geometry\&\$limit=100000000\&\$offset=0\&\$app_id=6e994abd\&\$app_key=eab998856c4cf607c4b072d3e8ae09c3
+    sed 's/\"//g' $i.1 > $i
+    rm $i.1 
+done
+
+
+
+dir=~/btraffic
+for i in bari milano napoli palermo roma torino venezia;
+do
+    java social_pulse.main_split_social_data $dir/social-pulse/$i $dir/social-pulse/$i.csv
+done
+
+
+
+curl -o roma https://api.dandelion.eu/datagems/v2/SpazioDati/social-pulse-2015-roma/data?\$select=timestamp,user,geometry\&\$limit=100000000\&\$offset=0\&\$app_id=6e994abd\&\$app_key=eab998856c4cf607c4b072d3e8ae09c3
+
+
+java -cp .:../lib/jcoord-1.0.jar -Xss1g \
+    -d64 \
+    -XX:+UseG1GC \
+    -Xms13g \
+    -Xmx13g \
+    -XX:MaxGCPauseMillis=500 \
+    social_pulse.main_social_fcd \
+    41.0473 16.6718 41.1962 16.9588 \
+    ~/btraffic/social-pulse/bari.csv \
+    ~/btraffic/Infoblu\ -\ Floating\ Car\ Data/bari \
+    ~/btraffic/bari_matched_trips.csv \
+    ~/btraffic/bari/edges.xml \
+    ~/btraffic/bari/
+
+
+java -cp .:../lib/jcoord-1.0.jar:../lib/gdal.jar -Xss1g \
+    -d64 \
+    -XX:+UseG1GC \
+    -Xms13g \
+    -Xmx13g \
+    -XX:MaxGCPauseMillis=500 \
+    social_pulse.main_social_fcd_shapefile \
+    ~/btraffic/social-pulse/bari.csv \
+    ~/btraffic/Infoblu\ -\ Floating\ Car\ Data/bari \
+    ~/btraffic/bari_matched_trips.csv \
+    ~/btraffic/CAP_Shapefile \
+    CodAvvPostale \
+    ~/btraffic/CAP_Shapefile/CodAvvPostale.prj \
+    ~/btraffic/bari/
+
+Bari
+minlat="41.0473" minlon="16.6718" maxlat="41.1962" maxlon="16.9588"
+
+java -cp .:../lib/jcoord-1.0.jar -Xss1g \
+    -d64 \
+    -XX:+UseG1GC \
+    -Xms3g \
+    -Xmx3g \
+    -XX:MaxGCPauseMillis=500 \
+    netconvert.test.main_plot_map_edges \
+    41.0473 16.6718 41.1962 16.9588 \
+    $dir/edges.xml \
+    $dir/map.png
+
+java -cp .:../lib/jcoord-1.0.jar -Xss1g \
+    -d64 \
+    -XX:+UseG1GC \
+    -Xms3g \
+    -Xmx3g \
+    -XX:MaxGCPauseMillis=500 \
+    netconvert.test.main_plot_map_edges \
+    41.0473 16.6718 41.1962 16.9588 \
+    $dir/edges.xml \
+    $dir/map.png
